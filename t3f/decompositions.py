@@ -178,9 +178,9 @@ def to_tt_tensor(tens, max_tt_rank=10, epsilon=None,
           min_dim = tf.minimum(rows, columns)
           ranks[core_idx + 1] = tf.minimum(max_tt_rank[core_idx + 1], min_dim)
           are_tt_ranks_defined = False
-      u = u[:, 0:ranks[core_idx + 1]]
-      s = s[0:ranks[core_idx + 1]]
-      v = v[:, 0:ranks[core_idx + 1]]
+      u = tf.stop_gradient(u[:, 0:ranks[core_idx + 1]])
+      s = tf.stop_gradient(s[0:ranks[core_idx + 1]])
+      v = tf.stop_gradient(v[:, 0:ranks[core_idx + 1]])
       core_shape = (ranks[core_idx], curr_mode, ranks[core_idx + 1])
       tt_cores.append(tf.reshape(u, core_shape))
       tens = tf.matmul(tf.diag(s), tf.transpose(v))
